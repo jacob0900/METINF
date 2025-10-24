@@ -1,0 +1,1025 @@
+---
+title: "Concrete"
+output: html_document
+date: "2025-10-20"
+---
+
+## Contexto y Introduccion 
+
+📚 CONTEXTO BREVE
+
+
+El concreto es un material de construcción crítico. Su resistencia a la compresión determina si una estructura es segura y durable. Este dataset contiene 1,030 muestras de concreto con diferentes composiciones y edades, con el objetivo de predecir su resistencia final basado en sus ingredientes.
+
+
+📊 VARIABLES
+
+
+Variable Respuesta:
+Compressive Strength (Y) - Resistencia a la compresión en MPa (megapascales)
+
+
+Variables Predictoras :
+
+Cement (X₁) - Cantidad de cemento en kg/m³
+
+
+Blast Furnace Slag (X₂) - Cantidad de escoria en kg/m³
+
+
+Fly Ash (X₃) - Cantidad de ceniza volante en kg/m³
+
+
+Water (X₄) - Cantidad de agua en kg/m³
+
+
+Superplasticizer (X₅) - Cantidad de aditivo en kg/m³
+
+
+Coarse Aggregate (X₆) - Cantidad de grava en kg/m³
+
+
+Fine Aggregate (X₇) - Cantidad de arena en kg/m³
+
+
+Age (X₈) - Edad del concreto en días
+
+```{r, include=FALSE}
+library(knitr)
+library(kableExtra)
+library(readxl)
+library(tibble)
+library(readr)
+library(Amelia)
+library(ggplot2)
+library(tidyverse)
+library(reshape2)
+library(gridExtra)
+library(GGally)
+library(MAVE)
+library(ggplot2)
+library(ggpubr)
+```
+
+### Clasificacion de las variables
+
+```{r}
+tabla_variables <- data.frame(
+  Variable = c(
+    "Cement",
+    "Blast Furnace Slag",
+    "Fly Ash",
+    "Water",
+    "Superplasticizer",
+    "Coarse Aggregate",
+    "Fine Aggregate",
+    "Age",
+    "Compressive Strength"
+  ),
+  Tipo = c(
+    rep("Numérica continua", 7),
+    "Numérica discreta",
+    "Numérica continua"
+  ),
+  `Escala de Medición` = c(
+    rep("Razón", 8),
+    "Razón"
+  ),
+  check.names = FALSE
+)
+
+# Crear tabla formateada para bookdown
+kable(tabla_variables, 
+      caption = "Descripción de Variables del Dataset Concrete Compressive Strength",
+      booktabs = TRUE,
+      longtable = TRUE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                latex_options = c("striped", "hold_position"),
+                full_width = FALSE,
+                font_size = 10) %>%
+  column_spec(1, bold = TRUE, width = "3cm") %>%
+  column_spec(2, width = "3cm") %>%
+  column_spec(3, width = "2.5cm")
+```
+
+## Importacion del dataset y exploracion incial
+
+
+### Caracteristicas del dataset 
+
+```{r }
+data(Concrete)
+head(Concrete)
+dim(Concrete)
+colnames(Concrete)
+str(Concrete)
+
+```
+
+### Revision de valores faltantes 
+
+```{r}
+missmap(Concrete)
+```
+
+
+
+El dataset Concrete Compressive Strength contiene 1,030 observaciones de muestras de concreto obtenidas de experimentos de laboratorio, sin valores faltantes. Cuenta con 9 variables en total: 8 predictoras (7 numéricas continuas y 1 numérica discreta) y 1 variable respuesta numérica continua. Todas las variables tienen escala de medición de razón. Se trata de un dataset limpio y de alta calidad, con datos de origen controlado , siendo probablemente un prospecto óptimo para análisis de regresión lineal sin necesidad de transformaciones.
+
+
+
+
+
+## Analisis Univariante 
+
+### Compressive Strength
+
+
+```{r}
+Concrete %>% 
+  summarise(
+    n = length(Concrete[[9]]),
+    media = mean(Concrete[[9]]),
+    ds = sd(Concrete[[9]]),
+    mediana = median(Concrete[[9]]),
+    minimo = min(Concrete[[9]]),
+    maximo = max(Concrete[[9]]),
+    Q1 = quantile(Concrete[[9]], 0.25),
+    Q3 = quantile(Concrete[[9]], 0.75),
+    IQR = IQR(Concrete[[9]])
+  )
+
+```
+
+La variable Compressive Strength fue analizada a partir de 1.030 observaciones. Se obtuvo una resistencia promedio de aproximadamente 35,82 MPa (DS = 16,71 MPa), donde el 50% de las muestras presentan resistencias por debajo de 34,45 MPa. El mínimo registrado fue de 2,33 MPa, lo que indica mezclas de concreto muy jóvenes (posiblemente evaluadas a 1 día de curado) o con proporciones poco óptimas de ingredientes. Por su parte, el máximo alcanzó los 82,6 MPa, lo cual refleja mezclas de alta resistencia con composiciones especiales, mayor contenido de cemento, uso de superplastificantes y tiempos de curado prolongados (hasta 365 días según el dataset).
+El rango intercuartílico (IQR = 22,43 MPa) muestra una variabilidad considerable, con el primer cuartil (Q1) en 23,71 MPa y el tercer cuartil (Q3) en 46,14 MPa. Esta dispersión confirma que la resistencia del concreto está fuertemente influenciada por la combinación de factores como la dosificación de cemento, la presencia de materiales suplementarios (escoria y ceniza volante), la relación agua-cemento y, especialmente, la edad de curado.
+
+```{r}
+# Histograma con curva de densidad
+ggplot(Concrete, aes(x = Concrete[[9]])) +
+  geom_histogram(aes(y = after_stat(density)), 
+                 fill = "steelblue", color = "white", bins = 30, alpha = 0.7) +
+  geom_density(color = "darkred", linewidth = 1) +
+  labs(
+    title = "Distribución de la Resistencia a la Compresión del Concreto",
+    x = "Resistencia a la Compresión (MPa)",
+    y = "Densidad",
+    caption = "n = 1,030 muestras"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text = element_text(size = 11),
+    axis.title = element_text(face = "bold", size = 12)
+  )
+
+```
+Se puede ver en el grafico la heterogenidad de los datos sin contar esa leve sesgo a la derecha lo que significa que las otras variables no deben estar influyendo de manera drastica en los  estadísticos como la media y la desviación estándar
+
+### Cement 
+
+
+
+```{r}
+
+ggplot(Concrete, aes(y = Cement)) +
+  geom_boxplot(fill = "coral", alpha = 0.7, outlier.color = "red", outlier.size = 2) +
+  labs(
+    title = "Distribución del Contenido de Cemento",
+    y = "Cemento (kg/m³)",
+    caption = "n = 1,030 muestras"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.y = element_text(size = 11),
+    axis.title.y = element_text(face = "bold", size = 12)
+  )
+
+Concrete %>% 
+  summarise(
+    n = length(Cement),
+    media = mean(Cement),
+    ds = sd(Cement),
+    CV = (sd(Cement) / mean(Cement)) * 100,
+    mediana = median(Cement),
+    minimo = min(Cement),
+    maximo = max(Cement),
+    Q1 = quantile(Cement, 0.25),
+    Q3 = quantile(Cement, 0.75),
+    IQR = IQR(Cement)
+     
+  )
+
+```
+La variable Cement presenta una media de 281,17 kg/m³ (DS = 104,51 kg/m³) con un coeficiente de variación del 37,17%, indicando alta variabilidad en las dosificaciones. El rango oscila entre 102 kg/m³ (mezclas con bajo cemento, posiblemente compensadas con materiales suplementarios) y 540 kg/m³ (mezclas de alta resistencia para aplicaciones estructurales exigentes). La mediana de 272,9 kg/m³ y el IQR de 157,63 kg/m³ (Q1 = 192,38; Q3 = 350) revelan una distribución relativamente simétrica con algunos valores atípicos superiores. Esta amplia variabilidad refleja la diversidad de diseños de mezcla empleados en el dataset para lograr diferentes niveles de resistencia.
+
+
+### Blast Furnace Slag
+
+
+
+```{r}
+ggplot(Concrete, aes(y = `Blast Furnace Slag`)) +
+  geom_boxplot(fill = "darkseagreen", alpha = 0.7, outlier.color = "red", outlier.size = 2) +
+  labs(
+    title = "Distribución del Contenido de Escoria de Alto Horno",
+    y = "Escoria de Alto Horno (kg/m³)",
+    caption = "n = 1,030 muestras"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.y = element_text(size = 11),
+    axis.title.y = element_text(face = "bold", size = 12)
+  )
+
+Concrete %>% 
+  summarise(
+    n = length(`Blast Furnace Slag`),
+    media = mean(`Blast Furnace Slag`),
+    ds = sd(`Blast Furnace Slag`),
+    CV = (sd(`Blast Furnace Slag`) / mean(`Blast Furnace Slag`)) * 100,
+    mediana = median(`Blast Furnace Slag`),
+    minimo = min(`Blast Furnace Slag`),
+    maximo = max(`Blast Furnace Slag`),
+    Q1 = quantile(`Blast Furnace Slag`, 0.25),
+    Q3 = quantile(`Blast Furnace Slag`, 0.75),
+    IQR = IQR(`Blast Furnace Slag`)
+  )
+```
+
+La variable Blast Furnace Slag presenta una media de 73,90 kg/m³ (DS = 86,28 kg/m³) con un coeficiente de variación del 116,76%, indicando una variabilidad extremadamente alta. La mediana de 22 kg/m³ es considerablemente menor que la media, revelando una marcada asimetría positiva. El rango oscila entre 0 kg/m³ (mezclas sin escoria) y 359,4 kg/m³ (mezclas con alto contenido de este material suplementario). El boxplot muestra que más del 50% de las muestras contienen cantidades bajas de escoria (Q1 = 0; Q3 = 142,95 kg/m³), con un valor atípico extremo alrededor de 360 kg/m³. Esta alta variabilidad refleja que la escoria es un ingrediente opcional utilizado selectivamente para mejorar propiedades específicas del concreto o reducir costos.
+
+### Fly Ash
+
+
+```{r}
+ggplot(Concrete, aes(y = `Fly Ash`)) +
+  geom_boxplot(fill = "lightskyblue", alpha = 0.7, outlier.color = "red", outlier.size = 2) +
+  labs(
+    title = "Distribución del Contenido de Ceniza Volante",
+    y = "Ceniza Volante (kg/m³)",
+    caption = "n = 1,030 muestras"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.y = element_text(size = 11),
+    axis.title.y = element_text(face = "bold", size = 12)
+  )
+
+Concrete %>% 
+  summarise(
+    n = length(`Fly Ash`),
+    media = mean(`Fly Ash`),
+    ds = sd(`Fly Ash`),
+    CV = (sd(`Fly Ash`) / mean(`Fly Ash`)) * 100,
+    mediana = median(`Fly Ash`),
+    minimo = min(`Fly Ash`),
+    maximo = max(`Fly Ash`),
+    Q1 = quantile(`Fly Ash`, 0.25),
+    Q3 = quantile(`Fly Ash`, 0.75),
+    IQR = IQR(`Fly Ash`)
+  )
+```
+
+La variable Fly Ash presenta una media de 54,19 kg/m³ (DS = 64,00 kg/m³) con un coeficiente de variación del 118,10%, indicando una variabilidad extremadamente alta similar a la escoria. La mediana de 0 kg/m³ revela que al menos el 50% de las muestras no contienen ceniza volante, confirmando una marcada asimetría positiva. El rango oscila entre 0 kg/m³ (mezclas sin ceniza) y 200,1 kg/m³ (mezclas con alto contenido de este material puzolánico). El boxplot muestra que el 75% de las muestras tienen valores entre 0 y 118,3 kg/m³ (Q3), con un valor atípico alrededor de 200 kg/m³. Esta distribución indica que la ceniza volante, al igual que la escoria, es un ingrediente opcional utilizado selectivamente como material cementante suplementario para mejorar la durabilidad o reducir el costo del concreto.
+
+
+
+
+```{r}
+ggplot(Concrete, aes(y = Water)) +
+  geom_boxplot(fill = "skyblue", alpha = 0.7, outlier.color = "red", outlier.size = 2) +
+  labs(
+    title = "Distribución del Contenido de Agua",
+    y = "Agua (kg/m³)",
+    caption = "n = 1,030 muestras"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.y = element_text(size = 11),
+    axis.title.y = element_text(face = "bold", size = 12)
+  )
+
+
+Concrete %>% 
+  summarise(
+    n = length(Water),
+    media = mean(Water),
+    ds = sd(Water),
+    CV = (sd(Water) / mean(Water)) * 100,
+    mediana = median(Water),
+    minimo = min(Water),
+    maximo = max(Water),
+    Q1 = quantile(Water, 0.25),
+    Q3 = quantile(Water, 0.75),
+    IQR = IQR(Water)
+  )
+```
+
+La variable Water presenta una media de 181,57 kg/m³ (DS = 21,35 kg/m³) con un coeficiente de variación del 11,76%, indicando baja variabilidad en comparación con otras variables. La mediana de 185 kg/m³ es cercana a la media, sugiriendo una distribución relativamente simétrica. El rango oscila entre 121,8 kg/m³ y 247 kg/m³, con un IQR reducido de 27,1 kg/m³ (Q1 = 164,9; Q3 = 192). El boxplot muestra algunos valores atípicos tanto superiores como inferiores, representando mezclas con relaciones agua-cemento extremas. Esta baja variabilidad refleja que el contenido de agua es un parámetro más controlado en el diseño de mezclas, ya que la relación agua-cemento es crítica para determinar la trabajabilidad y resistencia del concreto.
+
+```{r}
+ggplot(Concrete, aes(y = Superplasticizer)) +
+  geom_boxplot(fill = "plum", alpha = 0.7, outlier.color = "red", outlier.size = 2) +
+  labs(
+    title = "Distribución del Contenido de Superplastificante",
+    y = "Superplastificante (kg/m³)",
+    caption = "n = 1,030 muestras"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.y = element_text(size = 11),
+    axis.title.y = element_text(face = "bold", size = 12)
+  )
+
+Concrete %>% 
+  summarise(
+    n = length(Superplasticizer),
+    media = mean(Superplasticizer),
+    ds = sd(Superplasticizer),
+    CV = (sd(Superplasticizer) / mean(Superplasticizer)) * 100,
+    mediana = median(Superplasticizer),
+    minimo = min(Superplasticizer),
+    maximo = max(Superplasticizer),
+    Q1 = quantile(Superplasticizer, 0.25),
+    Q3 = quantile(Superplasticizer, 0.75),
+    IQR = IQR(Superplasticizer)
+  )
+```
+
+La variable Superplasticizer presenta una media de 6,20 kg/m³ (DS = 5,97 kg/m³) con un coeficiente de variación del 96,28%, indicando una variabilidad extremadamente alta. La mediana de 6,4 kg/m³ es cercana a la media, pero el mínimo de 0 kg/m³ revela que muchas mezclas no contienen este aditivo. El rango oscila entre 0 y 32,2 kg/m³, con un IQR de 10,2 kg/m³ (Q1 = 0; Q3 = 10,2). El boxplot muestra valores atípicos superiores alrededor de 28-32 kg/m³, representando mezclas de alto desempeño que requieren mayor fluidez. Esta distribución indica que el superplastificante es un aditivo químico opcional utilizado principalmente para mejorar la trabajabilidad del concreto sin aumentar el contenido de agua, siendo más común en mezclas de alta resistencia.
+
+### Coarse Aggregate
+
+```{r}
+ggplot(Concrete, aes(y = `Coarse Aggregate`)) +
+  geom_boxplot(fill = "tan", alpha = 0.7, outlier.color = "red", outlier.size = 2) +
+  labs(
+    title = "Distribución del Contenido de Agregado Grueso",
+    y = "Agregado Grueso (kg/m³)",
+    caption = "n = 1,030 muestras"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.y = element_text(size = 11),
+    axis.title.y = element_text(face = "bold", size = 12)
+  )
+
+Concrete %>% 
+  summarise(
+    n = length(`Coarse Aggregate`),
+    media = mean(`Coarse Aggregate`),
+    ds = sd(`Coarse Aggregate`),
+    CV = (sd(`Coarse Aggregate`) / mean(`Coarse Aggregate`)) * 100,
+    mediana = median(`Coarse Aggregate`),
+    minimo = min(`Coarse Aggregate`),
+    maximo = max(`Coarse Aggregate`),
+    Q1 = quantile(`Coarse Aggregate`, 0.25),
+    Q3 = quantile(`Coarse Aggregate`, 0.75),
+    IQR = IQR(`Coarse Aggregate`)
+  )
+```
+
+La variable Coarse Aggregate presenta una media de 972,92 kg/m³ (DS = 77,75 kg/m³) con un coeficiente de variación del 7,99%, indicando muy baja variabilidad. La mediana de 968 kg/m³ es prácticamente igual a la media, confirmando una distribución simétrica. El rango oscila entre 801 y 1145 kg/m³, con un IQR muy reducido de 97,4 kg/m³ (Q1 = 932; Q3 = 1029,4). El boxplot muestra ausencia de valores atípicos y una distribución muy compacta. Esta baja variabilidad refleja que el agregado grueso (grava) es un componente estructural esencial presente en cantidades relativamente constantes en todas las mezclas de concreto, representando típicamente el mayor volumen dentro de la composición y siendo crucial para la integridad estructural del material.
+
+### Fine Aggregate
+
+```{r}
+ggplot(Concrete, aes(y = `Fine Aggregate`)) +
+  geom_boxplot(fill = "sandybrown", alpha = 0.7, outlier.color = "red", outlier.size = 2) +
+  labs(
+    title = "Distribución del Contenido de Agregado Fino",
+    y = "Agregado Fino (kg/m³)",
+    caption = "n = 1,030 muestras"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.y = element_text(size = 11),
+    axis.title.y = element_text(face = "bold", size = 12)
+  )
+
+Concrete %>% 
+  summarise(
+    n = length(`Fine Aggregate`),
+    media = mean(`Fine Aggregate`),
+    ds = sd(`Fine Aggregate`),
+    CV = (sd(`Fine Aggregate`) / mean(`Fine Aggregate`)) * 100,
+    mediana = median(`Fine Aggregate`),
+    minimo = min(`Fine Aggregate`),
+    maximo = max(`Fine Aggregate`),
+    Q1 = quantile(`Fine Aggregate`, 0.25),
+    Q3 = quantile(`Fine Aggregate`, 0.75),
+    IQR = IQR(`Fine Aggregate`)
+  )
+```
+
+La variable Fine Aggregate presenta una media de 773,58 kg/m³ (DS = 80,18 kg/m³) con un coeficiente de variación del 10,36%, indicando baja variabilidad similar al agregado grueso. La mediana de 779,5 kg/m³ es cercana a la media, sugiriendo una distribución relativamente simétrica. El rango oscila entre 594 y 992,6 kg/m³, con un IQR de 93,05 kg/m³ (Q1 = 730,95; Q3 = 824). El boxplot muestra un valor atípico superior alrededor de 990 kg/m³, representando una mezcla con contenido excepcionalmente alto de arena. Esta baja variabilidad refleja que el agregado fino (arena) es otro componente estructural esencial presente en cantidades relativamente controladas en las mezclas de concreto, siendo fundamental para llenar los espacios vacíos entre el agregado grueso y lograr una matriz densa y trabajable.
+
+### Age 
+
+```{r}
+ggplot(Concrete, aes(y = Age)) +
+  geom_boxplot(fill = "tan", alpha = 0.7, outlier.color = "red", outlier.size = 2) +
+  labs(
+    title = "Distribución de la Edad",
+    y = "Edad (días)",
+    caption = "n = 1,030 muestras"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 14),
+    axis.text.y = element_text(size = 11),
+    axis.title.y = element_text(face = "bold", size = 12)
+  )
+
+Concrete %>% 
+  summarise(
+    n = length(Age),
+    media = mean(Age),
+    ds = sd(Age),
+    CV = (sd(Age) / mean(Age)) * 100,
+    mediana = median(Age),
+    minimo = min(Age),
+    maximo = max(Age),
+    Q1 = quantile(Age, 0.25),
+    Q3 = quantile(Age, 0.75),
+    IQR = IQR(Age)
+  )
+```
+
+La edad del concreto en este estudio muestra una distribución altamente asimétrica, con el 75% de las muestras concentradas en 56 días o menos (mediana de 28 días) y un coeficiente de variación del 138% que indica gran dispersión. Se identifican tres valores atípicos excepcionales (180, 270 y 365 días). Esta distribución es estratégica porque el concreto desarrolla la mayor parte de su resistencia en los primeros 28 días, aunque las muestras de mayor edad son valiosas para evaluar el comportamiento a largo plazo. La edad será probablemente un predictor clave de la resistencia a la compresión, con una relación positiva esperada donde a mayor edad, mayor resistencia.
+
+
+## Analisis bivariado y coorelacion
+
+
+
+
+
+
+```{r}
+df <- read_excel("C:/Users/jacob/OneDrive/Escritorio/Datasets/Concrete_Data.xls")
+View(df)
+
+colnames(df)
+
+##Renombramos para practicidad. 
+
+names(df)[names(df) == "Concrete compressive strength(MPa, megapascals)"] <- "Resistencia_c"
+
+names(df)[names(df) == "Cement (component 1)(kg in a m^3 mixture)"] <- "Cemento"
+
+names(df)[names(df) == "Blast Furnace Slag (component 2)(kg in a m^3 mixture)"] <- "Residuos"
+
+names(df)[names(df) == "Fly Ash (component 3)(kg in a m^3 mixture)"] <- "Cenizas"
+
+names(df)[names(df) == "Water  (component 4)(kg in a m^3 mixture)"] <- "Agua"
+
+names(df)[names(df) == "Superplasticizer (component 5)(kg in a m^3 mixture)" ] <- "Superplastificante"
+
+names(df)[names(df) == "Coarse Aggregate  (component 6)(kg in a m^3 mixture)" ] <- "Grueso"
+
+names(df)[names(df) == "Fine Aggregate (component 7)(kg in a m^3 mixture)" ] <- "Fino"
+
+names(df)[names(df) == "Age (day)" ] <- "Dias"
+
+colnames(df)
+```
+
+# veamos la normalidad de nuestra variable objetivo
+```{r}
+ks.test(df$Resistencia_c, "pnorm", mean = mean(df$Resistencia_c), sd = sd(df$Resistencia_c))
+
+print("Nuestra variable resistencia es normal.")
+
+```
+
+## 1. RESISTENCIA VS CEMENTO----------
+
+```{r}
+#Hacemos el primer gráfico de dispersión, entre la resistencia y el cemento
+
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Cemento)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre el cemento y la resistencia del concreto",
+    x = "Resistencia_c",
+    y = "Cemento"
+  ) +
+  theme_bw()
+
+ks.test(df$Cemento, "pnorm", mean = mean(df$Cemento), sd = sd(df$Cemento))
+print("La variable cemento no es normal. El pvalor<0.05. ")
+
+#como una de nuestras variables no es normal, debemos validar los supuestos de spearman
+
+
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Cemento)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Cemento))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Cemento", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Cemento", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Cemento, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Cemento, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado 
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+t_critico
+t_tab
+```
+
+El análisis de correlación de Spearman entre el contenido de **cemento** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+llo que sugiere una **correlación positiva debil**; es decir, a mayor proporción de residuos, la resistencia tiende a aumentar un poco.  
+La prueba de significancia permitió **rechazar la hipótesis nula**, demostrando que la relación es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+
+
+
+
+## 2. RESISTENCIA VS RESIDUOS--------------
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Residuos)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y los residuos",
+    x = "Resistencia_c",
+    y = "Residuos"
+  ) +
+  theme_bw()
+
+ks.test(df$Residuos, "pnorm", mean = mean(df$Residuos), sd = sd(df$Residuos))
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Residuos)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Residuos))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Residuos", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Residuos", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Cemento, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <-cor.test(df$Cemento, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+t_critico
+t_tab
+```
+
+El análisis de correlación de Spearman entre la cantidad de **residuos** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+lo que sugiere una **correlación positiva debil**; es decir, a mayor proporción de residuos, la resistencia tiende a aumentar un poco.  
+La prueba de significancia permitió **rechazar la hipótesis nula**, demostrando que la relación es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 3. RESISTENCIA VS CENIZAS-------------------
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Cenizas)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre eRESISTENCIA Y las cenizas",
+    x = "Resistencia_c",
+    y = "Cenizas"
+  ) +
+  theme_bw()
+
+ks.test(df$Cenizas, "pnorm", mean = mean(df$Cenizas), sd = sd(df$Cenizas))
+
+#no hay normalidad, hacemos spearman, verificando supuestos
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Cenizas)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Cenizas))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Cenizas", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Cenizas", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Cenizas, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <-cor.test(df$Cenizas, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+t_critico
+t_tab
+```
+
+El análisis de correlación de Spearman entre el contenido de **cenizas** y la **resistencia del concreto** arrojó un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+indicando una **correlación débil**.  
+La prueba de significancia permitió **rechazar H₀**, indicando una **relación monótona significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 4. RESISTENCIA VS AGUA------------
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Agua)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y AGUA",
+    x = "Resistencia_c",
+    y = "Agua"
+  ) +
+  theme_bw()
+
+ks.test(df$Agua, "pnorm", mean = mean(df$Agua), sd = sd(df$Agua))
+
+#no hay normalidad, hacemos spearman, verificando supuestos
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Agua)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Agua))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Agua", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Agua", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Agua, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Agua, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+abs(t_critico)
+t_tab
+```
+
+El análisis de Spearman entre la cantidad de **agua** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+lo que indica una **correlación negativa debil**; en otras palabras, **a mayor cantidad de agua, puede disminuir un poco resistencia**.  
+El valor del estadístico fue suficiente para **rechazar la hipótesis nula**, evidenciando una relación inversa **significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 5. RESISTENCIA VS Superplastificante-----------
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Superplastificante)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Superplastificante",
+    x = "Resistencia_c",
+    y = "Superplastificante"
+  ) +
+  theme_bw()
+
+ks.test(df$Superplastificante, "pnorm", mean = mean(df$Superplastificante), sd = sd(df$Superplastificante))
+#no hay normalidad, hacemos spearman, verificando supuestos
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Superplastificante)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Superplastificante))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Superplastificante", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Superplastificante", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Superplastificante, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Superplastificante, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+t_critico
+t_tab
+```
+
+El análisis de Spearman entre el contenido de **superplastificante** y la **resistencia del concreto** presentó un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+indicando una **correlación positiva debil**. Esto implica que el uso de superplastificante **podria mejorar ligeramente la resistencia** del concreto.  
+La prueba de significancia permitió **rechazar H₀**, confirmando que la relación observada es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 6. RESISTENCIA VS Grueso------------
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Grueso)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Grueso",
+    x = "Resistencia_c",
+    y = "Grueso"
+  ) +
+  theme_bw()
+
+ks.test(df$Grueso, "pnorm", mean = mean(df$Grueso), sd = sd(df$Grueso))
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Grueso)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Grueso))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Grueso", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Grueso", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Grueso, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Grueso, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+abs(t_critico)
+t_tab
+```
+
+El análisis de correlación de Spearman entre el **agregado grueso** y la **resistencia del concreto** arrojó un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+lo que sugiere una **correlación débil**;
+La prueba de significancia permitió **rechazar la hipótesis nula**, concluyendo que la relación es **significativa, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 7. RESISTENCIA VS Fino------------
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Fino)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Fino",
+    x = "Resistencia_c",
+    y = "Fino"
+  ) +
+  theme_bw()
+
+ks.test(df$Fino, "pnorm", mean = mean(df$Fino), sd = sd(df$Fino))
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Fino)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Fino))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Fino", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Fino", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Fino, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Fino, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+abs(t_critico)
+t_tab
+```
+
+El análisis de Spearman entre el contenido de **agregado fino** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+indicando una **correlación debil*; 
+El estadístico de prueba permitió **rechazar H₀**, demostrando que la relación observada es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+
+
+
+
