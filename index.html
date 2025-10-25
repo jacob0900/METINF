@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Concrete</title>
+  <meta name="description" content="Concrete" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Concrete" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Concrete" />
+  
+  
+  
+
+
+
+<meta name="date" content="2025-10-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path=""><a href="#contexto-y-introduccion"><i class="fa fa-check"></i><b>1</b> Contexto y Introduccion</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path=""><a href="#clasificacion-de-las-variables"><i class="fa fa-check"></i><b>1.1</b> Clasificacion de las variables</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path=""><a href="#importacion-del-dataset-y-exploracion-incial"><i class="fa fa-check"></i><b>2</b> Importacion del dataset y exploracion incial</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path=""><a href="#caracteristicas-del-dataset"><i class="fa fa-check"></i><b>2.1</b> Caracteristicas del dataset</a></li>
+<li class="chapter" data-level="2.2" data-path=""><a href="#revision-de-valores-faltantes"><i class="fa fa-check"></i><b>2.2</b> Revision de valores faltantes</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Concrete</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Concrete</h1>
+<p class="date"><em>2025-10-20</em></p>
+</div>
+<div id="contexto-y-introduccion" class="section level2 hasAnchor" number="1">
+<h2><span class="header-section-number">1</span> Contexto y Introduccion<a href="#contexto-y-introduccion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>📚 CONTEXTO BREVE</p>
+<p>El concreto es un material de construcción crítico. Su resistencia a la compresión determina si una estructura es segura y durable. Este dataset contiene 1,030 muestras de concreto con diferentes composiciones y edades, con el objetivo de predecir su resistencia final basado en sus ingredientes.</p>
+<p>📊 VARIABLES</p>
+<p>Variable Respuesta:
+Compressive Strength (Y) - Resistencia a la compresión en MPa (megapascales)</p>
+<p>Variables Predictoras :</p>
+<p>Cement (X₁) - Cantidad de cemento en kg/m³</p>
+<p>Blast Furnace Slag (X₂) - Cantidad de escoria en kg/m³</p>
+<p>Fly Ash (X₃) - Cantidad de ceniza volante en kg/m³</p>
+<p>Water (X₄) - Cantidad de agua en kg/m³</p>
+<p>Superplasticizer (X₅) - Cantidad de aditivo en kg/m³</p>
+<p>Coarse Aggregate (X₆) - Cantidad de grava en kg/m³</p>
+<p>Fine Aggregate (X₇) - Cantidad de arena en kg/m³</p>
+<p>Age (X₈) - Edad del concreto en días</p>
+<div id="clasificacion-de-las-variables" class="section level3 hasAnchor" number="1.1">
+<h3><span class="header-section-number">1.1</span> Clasificacion de las variables<a href="#clasificacion-de-las-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>tabla_variables <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="at">Variable =</span> <span class="fu">c</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="st">&quot;Cement&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="st">&quot;Blast Furnace Slag&quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    <span class="st">&quot;Fly Ash&quot;</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="st">&quot;Water&quot;</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    <span class="st">&quot;Superplasticizer&quot;</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="st">&quot;Coarse Aggregate&quot;</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="st">&quot;Fine Aggregate&quot;</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    <span class="st">&quot;Age&quot;</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    <span class="st">&quot;Compressive Strength&quot;</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  ),</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="at">Tipo =</span> <span class="fu">c</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;Numérica continua&quot;</span>, <span class="dv">7</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>    <span class="st">&quot;Numérica discreta&quot;</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    <span class="st">&quot;Numérica continua&quot;</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  ),</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>  <span class="st">`</span><span class="at">Escala de Medición</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="st">&quot;Razón&quot;</span>, <span class="dv">8</span>),</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>    <span class="st">&quot;Razón&quot;</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>  ),</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>)</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co"># Crear tabla formateada para bookdown</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="fu">kable</span>(tabla_variables, </span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">&quot;Descripción de Variables del Dataset Concrete Compressive Strength&quot;</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>      <span class="at">booktabs =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>      <span class="at">longtable =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>),</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>                <span class="at">latex_options =</span> <span class="fu">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hold_position&quot;</span>),</span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a>                <span class="at">full_width =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a>                <span class="at">font_size =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> <span class="cn">TRUE</span>, <span class="at">width =</span> <span class="st">&quot;3cm&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">2</span>, <span class="at">width =</span> <span class="st">&quot;3cm&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">3</span>, <span class="at">width =</span> <span class="st">&quot;2.5cm&quot;</span>)</span></code></pre></div>
+<table class="table table-striped table-hover table-condensed" style="font-size: 10px; color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:unnamed-chunk-2">Table 1: </span><span id="tab:unnamed-chunk-2">Table 2: </span>Descripción de Variables del Dataset Concrete Compressive Strength
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:left;">
+Tipo
+</th>
+<th style="text-align:left;">
+Escala de Medición
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 3cm; font-weight: bold;">
+Cement
+</td>
+<td style="text-align:left;width: 3cm; ">
+Numérica continua
+</td>
+<td style="text-align:left;width: 2.5cm; ">
+Razón
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 3cm; font-weight: bold;">
+Blast Furnace Slag
+</td>
+<td style="text-align:left;width: 3cm; ">
+Numérica continua
+</td>
+<td style="text-align:left;width: 2.5cm; ">
+Razón
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 3cm; font-weight: bold;">
+Fly Ash
+</td>
+<td style="text-align:left;width: 3cm; ">
+Numérica continua
+</td>
+<td style="text-align:left;width: 2.5cm; ">
+Razón
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 3cm; font-weight: bold;">
+Water
+</td>
+<td style="text-align:left;width: 3cm; ">
+Numérica continua
+</td>
+<td style="text-align:left;width: 2.5cm; ">
+Razón
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 3cm; font-weight: bold;">
+Superplasticizer
+</td>
+<td style="text-align:left;width: 3cm; ">
+Numérica continua
+</td>
+<td style="text-align:left;width: 2.5cm; ">
+Razón
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 3cm; font-weight: bold;">
+Coarse Aggregate
+</td>
+<td style="text-align:left;width: 3cm; ">
+Numérica continua
+</td>
+<td style="text-align:left;width: 2.5cm; ">
+Razón
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 3cm; font-weight: bold;">
+Fine Aggregate
+</td>
+<td style="text-align:left;width: 3cm; ">
+Numérica continua
+</td>
+<td style="text-align:left;width: 2.5cm; ">
+Razón
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 3cm; font-weight: bold;">
+Age
+</td>
+<td style="text-align:left;width: 3cm; ">
+Numérica discreta
+</td>
+<td style="text-align:left;width: 2.5cm; ">
+Razón
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 3cm; font-weight: bold;">
+Compressive Strength
+</td>
+<td style="text-align:left;width: 3cm; ">
+Numérica continua
+</td>
+<td style="text-align:left;width: 2.5cm; ">
+Razón
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="importacion-del-dataset-y-exploracion-incial" class="section level2 hasAnchor" number="2">
+<h2><span class="header-section-number">2</span> Importacion del dataset y exploracion incial<a href="#importacion-del-dataset-y-exploracion-incial" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="caracteristicas-del-dataset" class="section level3 hasAnchor" number="2.1">
+<h3><span class="header-section-number">2.1</span> Caracteristicas del dataset<a href="#caracteristicas-del-dataset" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">data</span>(Concrete)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">head</span>(Concrete)</span></code></pre></div>
+<pre><code>##   Cement Blast Furnace Slag Fly Ash Water Superplasticizer Coarse Aggregate
+## 1  540.0                0.0       0   162              2.5           1040.0
+## 2  540.0                0.0       0   162              2.5           1055.0
+## 3  332.5              142.5       0   228              0.0            932.0
+## 4  332.5              142.5       0   228              0.0            932.0
+## 5  198.6              132.4       0   192              0.0            978.4
+## 6  266.0              114.0       0   228              0.0            932.0
+##   Fine Aggregate Age Concrete Compressive Strength
+## 1          676.0  28                         79.99
+## 2          676.0  28                         61.89
+## 3          594.0 270                         40.27
+## 4          594.0 365                         41.05
+## 5          825.5 360                         44.30
+## 6          670.0  90                         47.03</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">dim</span>(Concrete)</span></code></pre></div>
+<pre><code>## [1] 1030    9</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">colnames</span>(Concrete)</span></code></pre></div>
+<pre><code>## [1] &quot;Cement&quot;                        &quot;Blast Furnace Slag&quot;           
+## [3] &quot;Fly Ash&quot;                       &quot;Water&quot;                        
+## [5] &quot;Superplasticizer&quot;              &quot;Coarse Aggregate&quot;             
+## [7] &quot;Fine Aggregate&quot;                &quot;Age&quot;                          
+## [9] &quot;Concrete Compressive Strength&quot;</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">str</span>(Concrete)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    1030 obs. of  9 variables:
+##  $ Cement                       : num  540 540 332 332 199 ...
+##  $ Blast Furnace Slag           : num  0 0 142 142 132 ...
+##  $ Fly Ash                      : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Water                        : num  162 162 228 228 192 228 228 228 228 228 ...
+##  $ Superplasticizer             : num  2.5 2.5 0 0 0 0 0 0 0 0 ...
+##  $ Coarse Aggregate             : num  1040 1055 932 932 978 ...
+##  $ Fine Aggregate               : num  676 676 594 594 826 ...
+##  $ Age                          : int  28 28 270 365 360 90 365 28 28 28 ...
+##  $ Concrete Compressive Strength: num  80 61.9 40.3 41 44.3 ...</code></pre>
+</div>
+<div id="revision-de-valores-faltantes" class="section level3 hasAnchor" number="2.2">
+<h3><span class="header-section-number">2.2</span> Revision de valores faltantes<a href="#revision-de-valores-faltantes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">missmap</span>(Concrete)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>El dataset Concrete Compressive Strength contiene 1,030 observaciones de muestras de concreto obtenidas de experimentos de laboratorio, sin valores faltantes. Cuenta con 9 variables en total: 8 predictoras (7 numéricas continuas y 1 numérica discreta) y 1 variable respuesta numérica continua. Todas las variables tienen escala de medición de razón. Se trata de un dataset limpio y de alta calidad, con datos de origen controlado , siendo probablemente un prospecto óptimo para análisis de regresión lineal sin necesidad de transformaciones.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": false,
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+</body>
+
+</html>

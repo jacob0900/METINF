@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Analisis Univariante</title>
+  <meta name="description" content="Analisis Univariante" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Analisis Univariante" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Analisis Univariante" />
+  
+  
+  
+
+
+
+<meta name="date" content="2025-10-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path=""><a href="#analisis-univariante"><i class="fa fa-check"></i><b>1</b> Analisis Univariante</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path=""><a href="#compressive-strength"><i class="fa fa-check"></i><b>1.1</b> Compressive Strength</a></li>
+<li class="chapter" data-level="1.2" data-path=""><a href="#cement"><i class="fa fa-check"></i><b>1.2</b> Cement</a></li>
+<li class="chapter" data-level="1.3" data-path=""><a href="#blast-furnace-slag"><i class="fa fa-check"></i><b>1.3</b> Blast Furnace Slag</a></li>
+<li class="chapter" data-level="1.4" data-path=""><a href="#fly-ash"><i class="fa fa-check"></i><b>1.4</b> Fly Ash</a></li>
+<li class="chapter" data-level="1.5" data-path=""><a href="#coarse-aggregate"><i class="fa fa-check"></i><b>1.5</b> Coarse Aggregate</a></li>
+<li class="chapter" data-level="1.6" data-path=""><a href="#fine-aggregate"><i class="fa fa-check"></i><b>1.6</b> Fine Aggregate</a></li>
+<li class="chapter" data-level="1.7" data-path=""><a href="#age"><i class="fa fa-check"></i><b>1.7</b> Age</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analisis Univariante</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Analisis Univariante</h1>
+<p class="date"><em>2025-10-20</em></p>
+</div>
+<div id="analisis-univariante" class="section level2 hasAnchor" number="1">
+<h2><span class="header-section-number">1</span> Analisis Univariante<a href="#analisis-univariante" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="compressive-strength" class="section level3 hasAnchor" number="1.1">
+<h3><span class="header-section-number">1.1</span> Compressive Strength<a href="#compressive-strength" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>Concrete <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(Concrete[[<span class="dv">9</span>]]),</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(Concrete[[<span class="dv">9</span>]]),</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(Concrete[[<span class="dv">9</span>]]),</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(Concrete[[<span class="dv">9</span>]]),</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(Concrete[[<span class="dv">9</span>]]),</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(Concrete[[<span class="dv">9</span>]]),</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(Concrete[[<span class="dv">9</span>]], <span class="fl">0.25</span>),</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(Concrete[[<span class="dv">9</span>]], <span class="fl">0.75</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(Concrete[[<span class="dv">9</span>]])</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##      n    media       ds mediana minimo maximo    Q1     Q3    IQR
+## 1 1030 35.81796 16.70574  34.445   2.33   82.6 23.71 46.135 22.425</code></pre>
+<p>La variable Compressive Strength fue analizada a partir de 1.030 observaciones. Se obtuvo una resistencia promedio de aproximadamente 35,82 MPa (DS = 16,71 MPa), donde el 50% de las muestras presentan resistencias por debajo de 34,45 MPa. El mínimo registrado fue de 2,33 MPa, lo que indica mezclas de concreto muy jóvenes (posiblemente evaluadas a 1 día de curado) o con proporciones poco óptimas de ingredientes. Por su parte, el máximo alcanzó los 82,6 MPa, lo cual refleja mezclas de alta resistencia con composiciones especiales, mayor contenido de cemento, uso de superplastificantes y tiempos de curado prolongados (hasta 365 días según el dataset).
+El rango intercuartílico (IQR = 22,43 MPa) muestra una variabilidad considerable, con el primer cuartil (Q1) en 23,71 MPa y el tercer cuartil (Q3) en 46,14 MPa. Esta dispersión confirma que la resistencia del concreto está fuertemente influenciada por la combinación de factores como la dosificación de cemento, la presencia de materiales suplementarios (escoria y ceniza volante), la relación agua-cemento y, especialmente, la edad de curado.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Histograma con curva de densidad</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">ggplot</span>(Concrete, <span class="fu">aes</span>(<span class="at">x =</span> Concrete[[<span class="dv">9</span>]])) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">color =</span> <span class="st">&quot;darkred&quot;</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución de la Resistencia a la Compresión del Concreto&quot;</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Resistencia a la Compresión (MPa)&quot;</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Densidad&quot;</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;n = 1,030 muestras&quot;</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## Warning: Use of `Concrete[[9]]` is discouraged.
+## ℹ Use `.data[[9]]` instead.
+## Use of `Concrete[[9]]` is discouraged.
+## ℹ Use `.data[[9]]` instead.</code></pre>
+<p><img src="01-intro_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+Se puede ver en el grafico la heterogenidad de los datos sin contar esa leve sesgo a la derecha lo que significa que las otras variables no deben estar influyendo de manera drastica en los estadísticos como la media y la desviación estándar</p>
+</div>
+<div id="cement" class="section level3 hasAnchor" number="1.2">
+<h3><span class="header-section-number">1.2</span> Cement<a href="#cement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">ggplot</span>(Concrete, <span class="fu">aes</span>(<span class="at">y =</span> Cement)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;coral&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución del Contenido de Cemento&quot;</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Cemento (kg/m³)&quot;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;n = 1,030 muestras&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="01-intro_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>Concrete <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(Cement),</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(Cement),</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(Cement),</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="at">CV =</span> (<span class="fu">sd</span>(Cement) <span class="sc">/</span> <span class="fu">mean</span>(Cement)) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(Cement),</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(Cement),</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(Cement),</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(Cement, <span class="fl">0.25</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(Cement, <span class="fl">0.75</span>),</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(Cement)</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>     </span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##      n    media       ds       CV mediana minimo maximo      Q1  Q3     IQR
+## 1 1030 281.1679 104.5064 37.16867   272.9    102    540 192.375 350 157.625</code></pre>
+<p>La variable Cement presenta una media de 281,17 kg/m³ (DS = 104,51 kg/m³) con un coeficiente de variación del 37,17%, indicando alta variabilidad en las dosificaciones. El rango oscila entre 102 kg/m³ (mezclas con bajo cemento, posiblemente compensadas con materiales suplementarios) y 540 kg/m³ (mezclas de alta resistencia para aplicaciones estructurales exigentes). La mediana de 272,9 kg/m³ y el IQR de 157,63 kg/m³ (Q1 = 192,38; Q3 = 350) revelan una distribución relativamente simétrica con algunos valores atípicos superiores. Esta amplia variabilidad refleja la diversidad de diseños de mezcla empleados en el dataset para lograr diferentes niveles de resistencia.</p>
+</div>
+<div id="blast-furnace-slag" class="section level3 hasAnchor" number="1.3">
+<h3><span class="header-section-number">1.3</span> Blast Furnace Slag<a href="#blast-furnace-slag" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">ggplot</span>(Concrete, <span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;darkseagreen&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución del Contenido de Escoria de Alto Horno&quot;</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Escoria de Alto Horno (kg/m³)&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;n = 1,030 muestras&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="01-intro_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>Concrete <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>    <span class="at">CV =</span> (<span class="fu">sd</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>) <span class="sc">/</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>)) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>),</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>),</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>, <span class="fl">0.25</span>),</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>, <span class="fl">0.75</span>),</span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(<span class="st">`</span><span class="at">Blast Furnace Slag</span><span class="st">`</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##      n    media       ds       CV mediana minimo maximo Q1     Q3    IQR
+## 1 1030 73.89583 86.27934 116.7581      22      0  359.4  0 142.95 142.95</code></pre>
+<p>La variable Blast Furnace Slag presenta una media de 73,90 kg/m³ (DS = 86,28 kg/m³) con un coeficiente de variación del 116,76%, indicando una variabilidad extremadamente alta. La mediana de 22 kg/m³ es considerablemente menor que la media, revelando una marcada asimetría positiva. El rango oscila entre 0 kg/m³ (mezclas sin escoria) y 359,4 kg/m³ (mezclas con alto contenido de este material suplementario). El boxplot muestra que más del 50% de las muestras contienen cantidades bajas de escoria (Q1 = 0; Q3 = 142,95 kg/m³), con un valor atípico extremo alrededor de 360 kg/m³. Esta alta variabilidad refleja que la escoria es un ingrediente opcional utilizado selectivamente para mejorar propiedades específicas del concreto o reducir costos.</p>
+</div>
+<div id="fly-ash" class="section level3 hasAnchor" number="1.4">
+<h3><span class="header-section-number">1.4</span> Fly Ash<a href="#fly-ash" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">ggplot</span>(Concrete, <span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;lightskyblue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución del Contenido de Ceniza Volante&quot;</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Ceniza Volante (kg/m³)&quot;</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;n = 1,030 muestras&quot;</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="01-intro_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>Concrete <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>    <span class="at">CV =</span> (<span class="fu">sd</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>) <span class="sc">/</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>)) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>),</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>),</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>, <span class="fl">0.25</span>),</span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>, <span class="fl">0.75</span>),</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(<span class="st">`</span><span class="at">Fly Ash</span><span class="st">`</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##      n    media     ds      CV mediana minimo maximo Q1    Q3   IQR
+## 1 1030 54.18835 63.997 118.101       0      0  200.1  0 118.3 118.3</code></pre>
+<p>La variable Fly Ash presenta una media de 54,19 kg/m³ (DS = 64,00 kg/m³) con un coeficiente de variación del 118,10%, indicando una variabilidad extremadamente alta similar a la escoria. La mediana de 0 kg/m³ revela que al menos el 50% de las muestras no contienen ceniza volante, confirmando una marcada asimetría positiva. El rango oscila entre 0 kg/m³ (mezclas sin ceniza) y 200,1 kg/m³ (mezclas con alto contenido de este material puzolánico). El boxplot muestra que el 75% de las muestras tienen valores entre 0 y 118,3 kg/m³ (Q3), con un valor atípico alrededor de 200 kg/m³. Esta distribución indica que la ceniza volante, al igual que la escoria, es un ingrediente opcional utilizado selectivamente como material cementante suplementario para mejorar la durabilidad o reducir el costo del concreto.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">ggplot</span>(Concrete, <span class="fu">aes</span>(<span class="at">y =</span> Water)) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;skyblue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución del Contenido de Agua&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Agua (kg/m³)&quot;</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;n = 1,030 muestras&quot;</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="01-intro_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>Concrete <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(Water),</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(Water),</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(Water),</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>    <span class="at">CV =</span> (<span class="fu">sd</span>(Water) <span class="sc">/</span> <span class="fu">mean</span>(Water)) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(Water),</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(Water),</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(Water),</span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(Water, <span class="fl">0.25</span>),</span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(Water, <span class="fl">0.75</span>),</span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(Water)</span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##      n    media       ds       CV mediana minimo maximo    Q1  Q3  IQR
+## 1 1030 181.5673 21.35422 11.76105     185  121.8    247 164.9 192 27.1</code></pre>
+<p>La variable Water presenta una media de 181,57 kg/m³ (DS = 21,35 kg/m³) con un coeficiente de variación del 11,76%, indicando baja variabilidad en comparación con otras variables. La mediana de 185 kg/m³ es cercana a la media, sugiriendo una distribución relativamente simétrica. El rango oscila entre 121,8 kg/m³ y 247 kg/m³, con un IQR reducido de 27,1 kg/m³ (Q1 = 164,9; Q3 = 192). El boxplot muestra algunos valores atípicos tanto superiores como inferiores, representando mezclas con relaciones agua-cemento extremas. Esta baja variabilidad refleja que el contenido de agua es un parámetro más controlado en el diseño de mezclas, ya que la relación agua-cemento es crítica para determinar la trabajabilidad y resistencia del concreto.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">ggplot</span>(Concrete, <span class="fu">aes</span>(<span class="at">y =</span> Superplasticizer)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;plum&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución del Contenido de Superplastificante&quot;</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Superplastificante (kg/m³)&quot;</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;n = 1,030 muestras&quot;</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="01-intro_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>Concrete <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(Superplasticizer),</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(Superplasticizer),</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(Superplasticizer),</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>    <span class="at">CV =</span> (<span class="fu">sd</span>(Superplasticizer) <span class="sc">/</span> <span class="fu">mean</span>(Superplasticizer)) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(Superplasticizer),</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(Superplasticizer),</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(Superplasticizer),</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(Superplasticizer, <span class="fl">0.25</span>),</span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(Superplasticizer, <span class="fl">0.75</span>),</span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(Superplasticizer)</span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##      n   media       ds       CV mediana minimo maximo Q1   Q3  IQR
+## 1 1030 6.20466 5.973841 96.27991     6.4      0   32.2  0 10.2 10.2</code></pre>
+<p>La variable Superplasticizer presenta una media de 6,20 kg/m³ (DS = 5,97 kg/m³) con un coeficiente de variación del 96,28%, indicando una variabilidad extremadamente alta. La mediana de 6,4 kg/m³ es cercana a la media, pero el mínimo de 0 kg/m³ revela que muchas mezclas no contienen este aditivo. El rango oscila entre 0 y 32,2 kg/m³, con un IQR de 10,2 kg/m³ (Q1 = 0; Q3 = 10,2). El boxplot muestra valores atípicos superiores alrededor de 28-32 kg/m³, representando mezclas de alto desempeño que requieren mayor fluidez. Esta distribución indica que el superplastificante es un aditivo químico opcional utilizado principalmente para mejorar la trabajabilidad del concreto sin aumentar el contenido de agua, siendo más común en mezclas de alta resistencia.</p>
+</div>
+<div id="coarse-aggregate" class="section level3 hasAnchor" number="1.5">
+<h3><span class="header-section-number">1.5</span> Coarse Aggregate<a href="#coarse-aggregate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">ggplot</span>(Concrete, <span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;tan&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución del Contenido de Agregado Grueso&quot;</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Agregado Grueso (kg/m³)&quot;</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;n = 1,030 muestras&quot;</span></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="01-intro_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>Concrete <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>),</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>),</span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>    <span class="at">CV =</span> (<span class="fu">sd</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>) <span class="sc">/</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>)) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>),</span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>),</span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>),</span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>, <span class="fl">0.25</span>),</span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>, <span class="fl">0.75</span>),</span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(<span class="st">`</span><span class="at">Coarse Aggregate</span><span class="st">`</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##      n    media       ds       CV mediana minimo maximo  Q1     Q3  IQR
+## 1 1030 972.9189 77.75395 7.991822     968    801   1145 932 1029.4 97.4</code></pre>
+<p>La variable Coarse Aggregate presenta una media de 972,92 kg/m³ (DS = 77,75 kg/m³) con un coeficiente de variación del 7,99%, indicando muy baja variabilidad. La mediana de 968 kg/m³ es prácticamente igual a la media, confirmando una distribución simétrica. El rango oscila entre 801 y 1145 kg/m³, con un IQR muy reducido de 97,4 kg/m³ (Q1 = 932; Q3 = 1029,4). El boxplot muestra ausencia de valores atípicos y una distribución muy compacta. Esta baja variabilidad refleja que el agregado grueso (grava) es un componente estructural esencial presente en cantidades relativamente constantes en todas las mezclas de concreto, representando típicamente el mayor volumen dentro de la composición y siendo crucial para la integridad estructural del material.</p>
+</div>
+<div id="fine-aggregate" class="section level3 hasAnchor" number="1.6">
+<h3><span class="header-section-number">1.6</span> Fine Aggregate<a href="#fine-aggregate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">ggplot</span>(Concrete, <span class="fu">aes</span>(<span class="at">y =</span> <span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;sandybrown&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución del Contenido de Agregado Fino&quot;</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Agregado Fino (kg/m³)&quot;</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;n = 1,030 muestras&quot;</span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb23-13"><a href="#cb23-13" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="01-intro_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>Concrete <span class="sc">%&gt;%</span> </span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>    <span class="at">CV =</span> (<span class="fu">sd</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>) <span class="sc">/</span> <span class="fu">mean</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>)) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>),</span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>),</span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>),</span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>, <span class="fl">0.25</span>),</span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>, <span class="fl">0.75</span>),</span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(<span class="st">`</span><span class="at">Fine Aggregate</span><span class="st">`</span>)</span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##      n    media       ds       CV mediana minimo maximo     Q1  Q3   IQR
+## 1 1030 773.5805 80.17598 10.36427   779.5    594  992.6 730.95 824 93.05</code></pre>
+<p>La variable Fine Aggregate presenta una media de 773,58 kg/m³ (DS = 80,18 kg/m³) con un coeficiente de variación del 10,36%, indicando baja variabilidad similar al agregado grueso. La mediana de 779,5 kg/m³ es cercana a la media, sugiriendo una distribución relativamente simétrica. El rango oscila entre 594 y 992,6 kg/m³, con un IQR de 93,05 kg/m³ (Q1 = 730,95; Q3 = 824). El boxplot muestra un valor atípico superior alrededor de 990 kg/m³, representando una mezcla con contenido excepcionalmente alto de arena. Esta baja variabilidad refleja que el agregado fino (arena) es otro componente estructural esencial presente en cantidades relativamente controladas en las mezclas de concreto, siendo fundamental para llenar los espacios vacíos entre el agregado grueso y lograr una matriz densa y trabajable.</p>
+</div>
+<div id="age" class="section level3 hasAnchor" number="1.7">
+<h3><span class="header-section-number">1.7</span> Age<a href="#age" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">ggplot</span>(Concrete, <span class="fu">aes</span>(<span class="at">y =</span> Age)) <span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">&quot;tan&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">outlier.color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">outlier.size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Distribución de la Edad&quot;</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Edad (días)&quot;</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;n = 1,030 muestras&quot;</span></span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="01-intro_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>Concrete <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">length</span>(Age),</span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>    <span class="at">media =</span> <span class="fu">mean</span>(Age),</span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a>    <span class="at">ds =</span> <span class="fu">sd</span>(Age),</span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a>    <span class="at">CV =</span> (<span class="fu">sd</span>(Age) <span class="sc">/</span> <span class="fu">mean</span>(Age)) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a>    <span class="at">mediana =</span> <span class="fu">median</span>(Age),</span>
+<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a>    <span class="at">minimo =</span> <span class="fu">min</span>(Age),</span>
+<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a>    <span class="at">maximo =</span> <span class="fu">max</span>(Age),</span>
+<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a>    <span class="at">Q1 =</span> <span class="fu">quantile</span>(Age, <span class="fl">0.25</span>),</span>
+<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a>    <span class="at">Q3 =</span> <span class="fu">quantile</span>(Age, <span class="fl">0.75</span>),</span>
+<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a>    <span class="at">IQR =</span> <span class="fu">IQR</span>(Age)</span>
+<span id="cb27-13"><a href="#cb27-13" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>##      n    media       ds      CV mediana minimo maximo Q1 Q3 IQR
+## 1 1030 45.66214 63.16991 138.342      28      1    365  7 56  49</code></pre>
+<p>La edad del concreto en este estudio muestra una distribución altamente asimétrica, con el 75% de las muestras concentradas en 56 días o menos (mediana de 28 días) y un coeficiente de variación del 138% que indica gran dispersión. Se identifican tres valores atípicos excepcionales (180, 270 y 365 días). Esta distribución es estratégica porque el concreto desarrolla la mayor parte de su resistencia en los primeros 28 días, aunque las muestras de mayor edad son valiosas para evaluar el comportamiento a largo plazo. La edad será probablemente un predictor clave de la resistencia a la compresión, con una relación positiva esperada donde a mayor edad, mayor resistencia.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": false,
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+</body>
+
+</html>

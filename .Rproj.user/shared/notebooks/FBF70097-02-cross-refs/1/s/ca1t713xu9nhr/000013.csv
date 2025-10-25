@@ -1,0 +1,5 @@
+"0",""
+"0","# 4️⃣ Verifica la forma de la relación (monótona)"
+"0","# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman"
+"0","plot(df$Cenizas, df$Resistencia_c, pch = 19, col = ""blue"","
+"0","     main = ""Verificación de relación monótona"")"

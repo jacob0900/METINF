@@ -1,0 +1,672 @@
+
+
+---
+title: "Analisis bivariado y coorelacion"
+output: html_document
+date: "2025-10-20"
+---
+
+
+
+
+
+```{r, include=FALSE}
+library(knitr)
+library(kableExtra)
+library(readxl)
+library(tibble)
+library(readr)
+library(Amelia)
+library(ggplot2)
+library(tidyverse)
+library(reshape2)
+library(gridExtra)
+library(GGally)
+library(MAVE)
+library(ggplot2)
+library(ggpubr)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+df <- read_excel("C:/Users/jacob/OneDrive/Escritorio/Datasets/Concrete_Data.xls")
+View(df)
+
+colnames(df)
+
+##Renombramos para practicidad. 
+
+names(df)[names(df) == "Concrete compressive strength(MPa, megapascals)"] <- "Resistencia_c"
+
+names(df)[names(df) == "Cement (component 1)(kg in a m^3 mixture)"] <- "Cemento"
+
+names(df)[names(df) == "Blast Furnace Slag (component 2)(kg in a m^3 mixture)"] <- "Residuos"
+
+names(df)[names(df) == "Fly Ash (component 3)(kg in a m^3 mixture)"] <- "Cenizas"
+
+names(df)[names(df) == "Water  (component 4)(kg in a m^3 mixture)"] <- "Agua"
+
+names(df)[names(df) == "Superplasticizer (component 5)(kg in a m^3 mixture)" ] <- "Superplastificante"
+
+names(df)[names(df) == "Coarse Aggregate  (component 6)(kg in a m^3 mixture)" ] <- "Grueso"
+
+names(df)[names(df) == "Fine Aggregate (component 7)(kg in a m^3 mixture)" ] <- "Fino"
+
+names(df)[names(df) == "Age (day)" ] <- "Dias"
+
+colnames(df)
+```
+
+# veamos la normalidad de nuestra variable objetivo
+```{r}
+ks.test(df$Resistencia_c, "pnorm", mean = mean(df$Resistencia_c), sd = sd(df$Resistencia_c))
+
+print("Nuestra variable resistencia es normal.")
+
+```
+
+## 1. RESISTENCIA VS CEMENTO----------
+
+```{r}
+#Hacemos el primer gráfico de dispersión, entre la resistencia y el cemento
+
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Cemento)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre el cemento y la resistencia del concreto",
+    x = "Resistencia_c",
+    y = "Cemento"
+  ) +
+  theme_bw()
+
+ks.test(df$Cemento, "pnorm", mean = mean(df$Cemento), sd = sd(df$Cemento))
+print("La variable cemento no es normal. El pvalor<0.05. ")
+
+#como una de nuestras variables no es normal, debemos validar los supuestos de spearman
+
+
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Cemento)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Cemento))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Cemento", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Cemento", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Cemento, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Cemento, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado 
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+t_critico
+t_tab
+```
+
+El análisis de correlación de Spearman entre el contenido de **cemento** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+llo que sugiere una **correlación positiva debil**; es decir, a mayor proporción de residuos, la resistencia tiende a aumentar un poco.  
+La prueba de significancia permitió **rechazar la hipótesis nula**, demostrando que la relación es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+
+
+
+
+## 2. RESISTENCIA VS RESIDUOS--------------
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Residuos)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y los residuos",
+    x = "Resistencia_c",
+    y = "Residuos"
+  ) +
+  theme_bw()
+
+ks.test(df$Residuos, "pnorm", mean = mean(df$Residuos), sd = sd(df$Residuos))
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Residuos)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Residuos))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Residuos", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Residuos", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Cemento, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <-cor.test(df$Cemento, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+t_critico
+t_tab
+```
+
+El análisis de correlación de Spearman entre la cantidad de **residuos** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+lo que sugiere una **correlación positiva debil**; es decir, a mayor proporción de residuos, la resistencia tiende a aumentar un poco.  
+La prueba de significancia permitió **rechazar la hipótesis nula**, demostrando que la relación es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 3. RESISTENCIA VS CENIZAS-------------------
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Cenizas)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre eRESISTENCIA Y las cenizas",
+    x = "Resistencia_c",
+    y = "Cenizas"
+  ) +
+  theme_bw()
+
+ks.test(df$Cenizas, "pnorm", mean = mean(df$Cenizas), sd = sd(df$Cenizas))
+
+#no hay normalidad, hacemos spearman, verificando supuestos
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Cenizas)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Cenizas))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Cenizas", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Cenizas", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Cenizas, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <-cor.test(df$Cenizas, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+t_critico
+t_tab
+```
+
+El análisis de correlación de Spearman entre el contenido de **cenizas** y la **resistencia del concreto** arrojó un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+indicando una **correlación débil**.  
+La prueba de significancia permitió **rechazar H₀**, indicando una **relación monótona significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 4. RESISTENCIA VS AGUA------------
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Agua)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y AGUA",
+    x = "Resistencia_c",
+    y = "Agua"
+  ) +
+  theme_bw()
+
+ks.test(df$Agua, "pnorm", mean = mean(df$Agua), sd = sd(df$Agua))
+
+#no hay normalidad, hacemos spearman, verificando supuestos
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Agua)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Agua))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Agua", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Agua", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Agua, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Agua, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+abs(t_critico)
+t_tab
+```
+
+El análisis de Spearman entre la cantidad de **agua** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+lo que indica una **correlación negativa debil**; en otras palabras, **a mayor cantidad de agua, puede disminuir un poco resistencia**.  
+El valor del estadístico fue suficiente para **rechazar la hipótesis nula**, evidenciando una relación inversa **significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 5. RESISTENCIA VS Superplastificante-----------
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Superplastificante)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Superplastificante",
+    x = "Resistencia_c",
+    y = "Superplastificante"
+  ) +
+  theme_bw()
+
+ks.test(df$Superplastificante, "pnorm", mean = mean(df$Superplastificante), sd = sd(df$Superplastificante))
+#no hay normalidad, hacemos spearman, verificando supuestos
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Superplastificante)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Superplastificante))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Superplastificante", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Superplastificante", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Superplastificante, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Superplastificante, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+t_critico
+t_tab
+```
+
+El análisis de Spearman entre el contenido de **superplastificante** y la **resistencia del concreto** presentó un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+indicando una **correlación positiva debil**. Esto implica que el uso de superplastificante **podria mejorar ligeramente la resistencia** del concreto.  
+La prueba de significancia permitió **rechazar H₀**, confirmando que la relación observada es **estadísticamente significativa**, puesto que nuestro t c6ritico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 6. RESISTENCIA VS Grueso------------
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Grueso)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Grueso",
+    x = "Resistencia_c",
+    y = "Grueso"
+  ) +
+  theme_bw()
+
+ks.test(df$Grueso, "pnorm", mean = mean(df$Grueso), sd = sd(df$Grueso))
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Grueso)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Grueso))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Grueso", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Grueso", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Grueso, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Grueso, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+abs(t_critico)
+t_tab
+```
+
+El análisis de correlación de Spearman entre el **agregado grueso** y la **resistencia del concreto** arrojó un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+lo que sugiere una **correlación débil**;
+La prueba de significancia permitió **rechazar la hipótesis nula**, concluyendo que la relación es **significativa, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+## 7. RESISTENCIA VS Fino------------
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y = Fino)) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Fino",
+    x = "Resistencia_c",
+    y = "Fino"
+  ) +
+  theme_bw()
+
+ks.test(df$Fino, "pnorm", mean = mean(df$Fino), sd = sd(df$Fino))
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Fino)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Fino))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Fino", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Fino", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Fino, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Fino, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+abs(t_critico)
+t_tab
+```
+
+El análisis de Spearman entre el contenido de **agregado fino** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+indicando una **correlación debil*; 
+El estadístico de prueba permitió **rechazar H₀**, demostrando que la relación observada es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+
+# Resistencia vs Dias 
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y =Dias )) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Dias",
+    x = "Resistencia_c",
+    y = "Dias"
+  ) +
+  theme_bw()
+
+ks.test(df$Dias, "pnorm", mean = mean(df$Dias), sd = sd(df$Dias))
+
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Dias)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Dias))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Dias", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Fino", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Dias, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Dias, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+
+```
+
+Planteamos las hipótesis:
+
+[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+]
+
+[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+abs(t_critico)
+t_tab
+```
+
+El análisis de Spearman entre el contenido de **Dias** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+indicando una **correlación debil*; 
+El estadístico de prueba permitió **rechazar H₀**, demostrando que la relación observada es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+
+

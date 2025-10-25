@@ -1,0 +1,483 @@
+---
+title: "Análisis de Resistencia del Concreto"
+author: "Tu Nombre"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 6)
+```
+
+# Carga de Librerías
+
+```{r librerias}
+library(readxl)
+library(ggplot2)
+library(ggpubr)
+library(tidyverse)
+library(nortest)
+```
+
+# Carga y Preparación de Datos
+
+```{r carga-datos}
+df <- read_excel("C:/Users/jacob/OneDrive/Escritorio/Datasets/Concrete_Data.xls")
+```
+
+## Nombres Originales de las Columnas
+
+```{r nombres-originales}
+colnames(df)
+```
+
+## Renombramiento de Variables
+
+Para mayor practicidad, renombramos las columnas a nombres más cortos en español.
+
+```{r renombrar}
+names(df)[names(df) == "Concrete compressive strength(MPa, megapascals)"] <- "Resistencia_c"
+names(df)[names(df) == "Cement (component 1)(kg in a m^3 mixture)"] <- "Cemento"
+names(df)[names(df) == "Blast Furnace Slag (component 2)(kg in a m^3 mixture)"] <- "Residuos"
+names(df)[names(df) == "Fly Ash (component 3)(kg in a m^3 mixture)"] <- "Cenizas"
+names(df)[names(df) == "Water  (component 4)(kg in a m^3 mixture)"] <- "Agua"
+names(df)[names(df) == "Superplasticizer (component 5)(kg in a m^3 mixture)"] <- "Superplastificante"
+names(df)[names(df) == "Coarse Aggregate  (component 6)(kg in a m^3 mixture)"] <- "Grueso"
+names(df)[names(df) == "Fine Aggregate (component 7)(kg in a m^3 mixture)"] <- "Fino"
+names(df)[names(df) == "Age (day)"] <- "Dias"
+
+colnames(df)
+```
+
+# Prueba de Normalidad - Variable Objetivo
+
+Verificamos si la variable Resistencia_c sigue una distribución normal usando la prueba de Kolmogorov-Smirnov.
+
+```{r normalidad-resistencia}
+ks.test(df$Resistencia_c, "pnorm", mean = mean(df$Resistencia_c), sd = sd(df$Resistencia_c))
+```
+
+**Conclusión:** Nuestra variable resistencia no es normal.
+
+# Análisis de Correlaciones
+
+## RESISTENCIA VS CEMENTO
+
+### Gráfico de Dispersión
+
+```{r resistencia-cemento-plot}
+df %>%
+  ggplot(aes(x = Resistencia_c, y = Cemento)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Relación entre el cemento y la resistencia del concreto",
+    x = "Resistencia_c",
+    y = "Cemento"
+  ) +
+  theme_bw()
+```
+
+### Prueba de Normalidad - Cemento
+
+```{r normalidad-cemento}
+lillie.test(df$Cemento)
+```
+
+**Conclusión:** La variable cemento no es normal. El p-valor < 0.05.
+
+Como una de nuestras variables no es normal, debemos validar los supuestos de Spearman.
+
+### Validación de Supuestos para Spearman
+
+```{r supuestos-cemento}
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Cemento)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Cemento))
+sum(is.na(df$Resistencia_c))
+```
+
+### Visualización de Correlación
+
+```{r correlacion-cemento-visual}
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Cemento", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Cemento", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+plot(df$Cemento, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+```
+
+### Prueba de Correlación de Spearman
+
+```{r spearman-cemento}
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+cor.test(df$Cemento, df$Resistencia_c, method = "spearman", exact = FALSE)
+```
+
+## RESISTENCIA VS RESIDUOS
+
+### Gráfico de Dispersión
+
+```{r resistencia-residuos-plot}
+df %>%
+  ggplot(aes(x = Resistencia_c, y = Residuos)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Relación entre RESISTENCIA y los residuos",
+    x = "Resistencia_c",
+    y = "Residuos"
+  ) +
+  theme_bw()
+```
+
+### Prueba de Normalidad y Análisis
+
+```{r analisis-residuos}
+lillie.test(df$Residuos)
+
+# Verifica que las variables sean numéricas
+is.numeric(df$Residuos)
+is.numeric(df$Resistencia_c)
+
+# Revisa valores faltantes
+sum(is.na(df$Residuos))
+sum(is.na(df$Resistencia_c))
+
+# Visualiza la relación
+ggscatter(df, x = "Residuos", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Residuos", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# Verifica la forma de la relación (monótona)
+plot(df$Cemento, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# Ejecuta la prueba de correlación de Spearman
+cor.test(df$Cemento, df$Resistencia_c, method = "spearman", exact = FALSE)
+```
+
+## RESISTENCIA VS CENIZAS
+
+### Gráfico de Dispersión
+
+```{r resistencia-cenizas-plot}
+df %>%
+  ggplot(aes(x = Resistencia_c, y = Cenizas)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Relación entre RESISTENCIA Y las cenizas",
+    x = "Resistencia_c",
+    y = "Cenizas"
+  ) +
+  theme_bw()
+```
+
+### Prueba de Normalidad y Análisis
+
+```{r analisis-cenizas}
+lillie.test(df$Cenizas)
+
+# No hay normalidad, hacemos spearman, verificando supuestos
+
+# Verifica que las variables sean numéricas
+is.numeric(df$Cenizas)
+is.numeric(df$Resistencia_c)
+
+# Revisa valores faltantes
+sum(is.na(df$Cenizas))
+sum(is.na(df$Resistencia_c))
+
+# Visualiza la relación
+ggscatter(df, x = "Cenizas", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Cenizas", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# Verifica la forma de la relación (monótona)
+plot(df$Cenizas, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# Ejecuta la prueba de correlación de Spearman
+cor.test(df$Cenizas, df$Resistencia_c, method = "spearman", exact = FALSE)
+```
+
+## RESISTENCIA VS AGUA
+
+### Gráfico de Dispersión
+
+```{r resistencia-agua-plot}
+df %>%
+  ggplot(aes(x = Resistencia_c, y = Agua)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Relación entre RESISTENCIA y AGUA",
+    x = "Resistencia_c",
+    y = "Agua"
+  ) +
+  theme_bw()
+```
+
+### Prueba de Normalidad y Análisis
+
+```{r analisis-agua}
+lillie.test(df$Agua)
+
+# No hay normalidad, hacemos spearman, verificando supuestos
+
+# Verifica que las variables sean numéricas
+is.numeric(df$Agua)
+is.numeric(df$Resistencia_c)
+
+# Revisa valores faltantes
+sum(is.na(df$Agua))
+sum(is.na(df$Resistencia_c))
+
+# Visualiza la relación
+ggscatter(df, x = "Agua", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Agua", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# Verifica la forma de la relación (monótona)
+plot(df$Agua, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# Ejecuta la prueba de correlación de Spearman
+cor.test(df$Agua, df$Resistencia_c, method = "spearman", exact = FALSE)
+```
+
+## RESISTENCIA VS SUPERPLASTIFICANTE
+
+### Gráfico de Dispersión
+
+```{r resistencia-superplastificante-plot}
+df %>%
+  ggplot(aes(x = Resistencia_c, y = Superplastificante)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Superplastificante",
+    x = "Resistencia_c",
+    y = "Superplastificante"
+  ) +
+  theme_bw()
+```
+
+### Prueba de Normalidad y Análisis
+
+```{r analisis-superplastificante}
+lillie.test(df$Superplastificante)
+
+# No hay normalidad, hacemos spearman, verificando supuestos
+
+# Verifica que las variables sean numéricas
+is.numeric(df$Superplastificante)
+is.numeric(df$Resistencia_c)
+
+# Revisa valores faltantes
+sum(is.na(df$Superplastificante))
+sum(is.na(df$Resistencia_c))
+
+# Visualiza la relación
+ggscatter(df, x = "Superplastificante", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Superplastificante", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# Verifica la forma de la relación (monótona)
+plot(df$Superplastificante, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# Ejecuta la prueba de correlación de Spearman
+cor.test(df$Superplastificante, df$Resistencia_c, method = "spearman", exact = FALSE)
+```
+
+## RESISTENCIA VS GRUESO
+
+### Gráfico de Dispersión
+
+```{r resistencia-grueso-plot}
+df %>%
+  ggplot(aes(x = Resistencia_c, y = Grueso)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Grueso",
+    x = "Resistencia_c",
+    y = "Grueso"
+  ) +
+  theme_bw()
+```
+
+### Prueba de Normalidad y Análisis
+
+```{r analisis-grueso}
+lillie.test(df$Grueso)
+
+# Verifica que las variables sean numéricas
+is.numeric(df$Grueso)
+is.numeric(df$Resistencia_c)
+
+# Revisa valores faltantes
+sum(is.na(df$Grueso))
+sum(is.na(df$Resistencia_c))
+
+# Visualiza la relación
+ggscatter(df, x = "Grueso", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Grueso", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# Verifica la forma de la relación (monótona)
+plot(df$Grueso, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# Ejecuta la prueba de correlación de Spearman
+cor.test(df$Grueso, df$Resistencia_c, method = "spearman", exact = FALSE)
+```
+
+## RESISTENCIA VS FINO
+
+### Gráfico de Dispersión
+
+```{r resistencia-fino-plot}
+df %>%
+  ggplot(aes(x = Resistencia_c, y = Fino)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Fino",
+    x = "Resistencia_c",
+    y = "Fino"
+  ) +
+  theme_bw()
+```
+
+### Prueba de Normalidad y Análisis
+
+```{r analisis-fino}
+lillie.test(df$Fino)
+
+# Verifica que las variables sean numéricas
+is.numeric(df$Fino)
+is.numeric(df$Resistencia_c)
+
+# Revisa valores faltantes
+sum(is.na(df$Fino))
+sum(is.na(df$Resistencia_c))
+
+# Visualiza la relación
+ggscatter(df, x = "Fino", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Fino", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# Verifica la forma de la relación (monótona)
+plot(df$Fino, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# Ejecuta la prueba de correlación de Spearman
+cor.test(df$Fino, df$Resistencia_c, method = "spearman", exact = FALSE)
+```
+
+# Conclusiones
+
+Este documento presenta un análisis completo de las correlaciones entre la resistencia del concreto y sus diferentes componentes, utilizando pruebas de normalidad de Lilliefors y correlaciones de Spearman cuando las variables no siguen una distribución normal.
+
+## Resistencia vs Dias
+
+## 8. RESISTENCIA VS Dias------------
+
+```{r}
+df %>%
+  ggplot(aes(x=Resistencia_c, y =Dias )) +
+  geom_point(color = "blue",size = 3) +
+  geom_smooth(formula = 'y~x', method = "lm",se = TRUE,color="red") +
+  labs(
+    title = "Relación entre RESISTENCIA y Dias",
+    x = "Resistencia_c",
+    y = "Dias"
+  ) +
+  theme_bw()
+
+lillie.test(df$Dias)
+# 1️⃣ Verifica que las variables sean numéricas
+is.numeric(df$Dias)
+is.numeric(df$Resistencia_c)
+
+# 2️⃣ Revisa valores faltantes
+sum(is.na(df$Dias))
+sum(is.na(df$Resistencia_c))
+
+# 3️⃣ Visualiza la relación
+ggscatter(df, x = "Dias", y = "Resistencia_c",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "spearman",
+          xlab = "Fino", ylab = "Resistencia del concreto",
+          title = "Dispersión y correlación (Spearman)")
+
+# 4️⃣ Verifica la forma de la relación (monótona)
+# Si la relación es creciente o decreciente, aunque no lineal, se puede usar Spearman
+plot(df$Dias, df$Resistencia_c, pch = 19, col = "blue",
+     main = "Verificación de relación monótona")
+
+# 5️⃣ Ejecuta la prueba de correlación de Spearman
+resultado <- cor.test(df$Dias, df$Resistencia_c, method = "spearman", exact=FALSE)
+resultado
+```
+
+Planteamos las hipótesis:
+
+\[
+H_0: \rho_S = 0 \quad \text{(no hay relación monótona)}
+\]
+
+\[
+H_1: \rho_S \neq 0 \quad \text{(existe relación monótona)}
+\]
+
+Veamos:
+
+```{r}
+n <- nrow(df)
+gl = n-2
+p = resultado$estimate[[1]]
+t_critico = p*sqrt(gl/1-p^2)
+t_critico = abs(t_critico)
+alpha = 0.05
+t_tab = qt(1-alpha/2,df=gl)
+abs(t_critico)
+t_tab
+```
+
+El análisis de Spearman entre el contenido de **dias** y la **resistencia del concreto** mostró un coeficiente  
+\[
+\rho_S = [`r p`],
+\]
+indicando una **correlación positica moderada*; con el aumento de los dias mejora la resistencia del concreto.
+El estadístico de prueba permitió **rechazar H₀**, demostrando que la relación observada es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+
+

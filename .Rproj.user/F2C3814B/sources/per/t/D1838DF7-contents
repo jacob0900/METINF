@@ -875,7 +875,7 @@ El análisis de Spearman entre el contenido de **superplastificante** y la **res
 \rho_S = [`r p`],
 \]
 indicando una **correlación positiva debil**. Esto implica que el uso de superplastificante **podria mejorar ligeramente la resistencia** del concreto.  
-La prueba de significancia permitió **rechazar H₀**, confirmando que la relación observada es **estadísticamente significativa**, puesto que nuestro t critico `r t_critico` es mayor que el t en tabla `r t_tab`.
+La prueba de significancia permitió **rechazar H₀**, confirmando que la relación observada es **estadísticamente significativa**, puesto que nuestro t c6ritico `r t_critico` es mayor que el t en tabla `r t_tab`.
 
 ## 6. RESISTENCIA VS Grueso------------
 ```{r}
