@@ -1,0 +1,25 @@
+h2:analisis-univariado Analisis Univariado
+h3:resistencia Resistencia
+h3:cemento Cemento
+h3:residuo Residuo
+h3:ceniza Ceniza
+h3:agua Agua
+h3:superplastificante Superplastificante
+h3:grueso Grueso
+h3:fino Fino
+h3:días Días
+h2:preparación-de-los-datos Preparación de los datos
+h3:carga-del-dataframe Carga del dataframe
+h3:nombres-originales-de-las-columnas Nombres Originales de las Columnas
+h3:renombramiento-de-variables Renombramiento de Variables
+h2:análisis-de-correlaciones Análisis de Correlaciones
+h3:resistencia-vs-cemento Resistencia vs Cemento
+h3:resistencia-vs-residuos Resistencia vs Residuos
+h3:resistencia-vs-cenizas Resistencia vs Cenizas
+h3:resistencia-vs-agua Resistencia vs Agua
+h3:resistencia-vs-superplastificante Resistencia vs Superplastificante
+h3:resistencia-vs-grueso Resistencia vs Grueso
+h3:resistencia-vs-fino Resistencia vs Fino
+h3:resistencia-vs-dias Resistencia vs Dias
+h2:conclusiones Conclusiones
+

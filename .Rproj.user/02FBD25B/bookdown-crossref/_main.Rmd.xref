@@ -1,0 +1,68 @@
+h2:contexto-e-introduccion Contexto e Introduccion
+h3:clasificacion-de-las-variables Clasificacion de las variables
+h2:importacion-del-dataset-y-exploracion-incial Importacion del dataset y exploracion incial
+h3:caracteristicas-del-dataset Caracteristicas del dataset
+h3:revision-de-valores-faltantes Revision de valores faltantes
+h2:analisis-univariante Analisis Univariante
+h3:compressive-strength Compressive Strength
+h3:cement Cement
+h3:blast-furnace-slag Blast Furnace Slag
+h3:fly-ash Fly Ash
+h3:coarse-aggregate Coarse Aggregate
+h3:fine-aggregate Fine Aggregate
+h3:age Age
+h2:analisis-univariante-1 Analisis Univariante
+h3:compressive-strength-1 Compressive Strength
+h3:cement-1 Cement
+h3:blast-furnace-slag-1 Blast Furnace Slag
+h3:fly-ash-1 Fly Ash
+h3:coarse-aggregate-1 Coarse Aggregate
+h3:fine-aggregate-1 Fine Aggregate
+h3:age-1 Age
+h1:carga-de-librerías Carga de Librerías
+h1:carga-y-preparación-de-datos Carga y Preparación de Datos
+h2:nombres-originales-de-las-columnas Nombres Originales de las Columnas
+h2:renombramiento-de-variables Renombramiento de Variables
+h1:prueba-de-normalidad---variable-objetivo Prueba de Normalidad - Variable Objetivo
+h1:análisis-de-correlaciones Análisis de Correlaciones
+h2:resistencia-vs-cemento RESISTENCIA VS CEMENTO
+h3:gráfico-de-dispersión Gráfico de Dispersión
+h3:prueba-de-normalidad---cemento Prueba de Normalidad - Cemento
+h3:validación-de-supuestos-para-spearman Validación de Supuestos para Spearman
+h3:visualización-de-correlación Visualización de Correlación
+h3:prueba-de-correlación-de-spearman Prueba de Correlación de Spearman
+h2:resistencia-vs-residuos RESISTENCIA VS RESIDUOS
+h3:gráfico-de-dispersión-1 Gráfico de Dispersión
+h3:prueba-de-normalidad-y-análisis Prueba de Normalidad y Análisis
+h2:resistencia-vs-cenizas RESISTENCIA VS CENIZAS
+h3:gráfico-de-dispersión-2 Gráfico de Dispersión
+h3:prueba-de-normalidad-y-análisis-1 Prueba de Normalidad y Análisis
+h2:resistencia-vs-agua RESISTENCIA VS AGUA
+h3:gráfico-de-dispersión-3 Gráfico de Dispersión
+h3:prueba-de-normalidad-y-análisis-2 Prueba de Normalidad y Análisis
+h2:resistencia-vs-superplastificante RESISTENCIA VS SUPERPLASTIFICANTE
+h3:gráfico-de-dispersión-4 Gráfico de Dispersión
+h3:prueba-de-normalidad-y-análisis-3 Prueba de Normalidad y Análisis
+h2:resistencia-vs-grueso RESISTENCIA VS GRUESO
+h3:gráfico-de-dispersión-5 Gráfico de Dispersión
+h3:prueba-de-normalidad-y-análisis-4 Prueba de Normalidad y Análisis
+h2:resistencia-vs-fino RESISTENCIA VS FINO
+h3:gráfico-de-dispersión-6 Gráfico de Dispersión
+h3:prueba-de-normalidad-y-análisis-5 Prueba de Normalidad y Análisis
+h1:conclusiones Conclusiones
+h2:resistencia-vs-dias Resistencia vs Dias
+h2:resistencia-vs-dias-1 8. RESISTENCIA VS Dias————
+h1:parts Parts
+h1:footnotes-and-citations Footnotes and citations
+h2:footnotes Footnotes
+h2:citations Citations
+h1:blocks Blocks
+h2:equations Equations
+h2:theorems-and-proofs Theorems and proofs
+h2:callout-blocks Callout blocks
+h1:sharing-your-book Sharing your book
+h2:publishing Publishing
+h2:pages 404 pages
+h2:metadata-for-sharing Metadata for sharing
+h1:references References
+
